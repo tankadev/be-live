@@ -22,7 +22,7 @@
     "heroku-postbuild": "npm install && npm install --no-shrinkwrap && npm run build"
   },
   "engines": {
-    "node": "13.9.1"
+    "node": "14.17.5"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
