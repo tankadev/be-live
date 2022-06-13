@@ -42,7 +42,7 @@ async function bootstrap() {
   };
 
   // Set global prefix
-  app.setGlobalPrefix('hita-live');
+  // app.setGlobalPrefix('hita-live');
 
   const dotenvService = app.get<DotenvService>(DotenvService);
 
