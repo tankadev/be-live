@@ -23,7 +23,6 @@ function initSwagger(app) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const options = {
     origin: '*',
     methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
@@ -35,52 +34,23 @@ async function bootstrap() {
       'Module',
       'X-Requested-With',
       'Access-Control-Allow-Origin',
+      'objectcd',
       'Content-Type',
       'UserId',
+      'CompanyId',
+      'OrganizationId',
       '*'
     ]
   };
-
-  // Set global prefix
-  // app.setGlobalPrefix('hita-live');
-
-  const dotenvService = app.get<DotenvService>(DotenvService);
-
-  // Setup security middleware
-  app.use(helmet());
-
-  // Setup bodyparser here to set configuration on it
-  app.use(bodyParser.json({ limit: '10mb' }));
-
-  // Use a global validation pipe. This will ensure that whenever we specify
-  // a type for the input of a network request it will get validated before processing.
-  // See: https://docs.nestjs.com/techniques/validation
-  app.useGlobalPipes(new ValidationPipe());
-
-  logger.debug(`Listening on port: ${dotenvService.get('PORT')}`);
-
-  process.on('uncaughtException', err => {
-    console.log('Uncaught Exception:');
-    console.log(err);
-    console.log(err.stack);
-  });
-
-  process.on('unhandledRejection', err => {
-    console.log('Unhandled Rejection:');
-    console.log(err);
-  });
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // Set the config options
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const serviceAccount = require("../hita-live-serviceKey.json");
   // Initialize the firebase admin app
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
-
   app.enableCors(options);
-  if (dotenvService.get('USE_SWAGGER') === 'true') {
-    initSwagger(app);
-  }
-
-  await app.listen(dotenvService.get('PORT'));
+  await app.listen(process.env.PORT || 3300);
 }
 bootstrap();
