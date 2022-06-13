@@ -21,6 +21,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "heroku-postbuild": "npm install && npm install --no-shrinkwrap && npm run build"
   },
+  "engines": {
+    "node": "13.9.1"
+  },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
